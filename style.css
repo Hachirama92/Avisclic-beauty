@@ -47,11 +47,13 @@ h1 {
     white-space: nowrap; /* Empêche les étoiles de passer à la ligne par défaut */
     overflow: hidden; /* Cache le débordement si les étoiles sont trop grandes avant d'être réduites */
     max-width: 100%; /* S'assure que le bloc ne dépasse pas le conteneur */
+    text-align: center; /* Centre les étoiles si elles sont trop petites pour remplir la largeur */
 }
 
 .star {
     transition: color 0.2s ease-in-out, transform 0.1s ease-in-out;
     display: inline-block; /* Important pour l'espacement et les transitions individuelles */
+    vertical-align: middle; /* Aide à l'alignement sur la ligne */
 }
 
 .star.selected {
@@ -59,23 +61,31 @@ h1 {
 }
 
 /* Correction de l'effet de survol des étoiles */
+/* Ces règles sont cruciales pour que l'effet de survol illumine les étoiles précédentes */
 .stars:not(.rated) .star:hover,
-.stars:not(.rated) .star.hovered { /* Ajout de .hovered pour le JS */
-    color: #f39c12; /* Illumine l'étoile survolée */
-}
-.stars:not(.rated) .star:hover ~ .star,
-.stars:not(.rated) .star.hovered ~ .star {
-    color: #d1d8e0; /* Réinitialise les étoiles à droite de l'étoile survolée */
-}
-.stars:not(.rated) .star.selected ~ .star { /* S'assure que les étoiles non survolées sont grisées si une sélection préalable est annulée par le mouseout */
-    color: #d1d8e0;
+.stars:not(.rated) .star:hover ~ .star {
+    color: #f39c12; /* Illumine l'étoile survolée et les précédentes */
 }
 
+.stars:not(.rated) .star:hover ~ .star {
+    color: #d1d8e0; /* Les étoiles à droite de l'étoile survolée redeviennent grisées si elles étaient sélectionnées */
+}
+
+.stars:not(.rated) .star.selected { /* Pour la sélection persistante avant que 'rated' ne soit appliqué */
+    color: #f39c12;
+}
+.stars:not(.rated) .star.selected ~ .star {
+    color: #d1d8e0;
+}
 
 /* S'assurer que les étoiles restent sélectionnées après le clic */
 .stars.rated .star.selected {
     color: #f39c12;
 }
+.stars.rated .star:not(.selected) { /* S'assurer que seules les étoiles sélectionnées restent colorées après le clic */
+    color: #d1d8e0;
+}
+
 
 .hidden {
     display: none;
@@ -199,17 +209,17 @@ button#submit-low-score:hover {
 /* --- Ajustements pour les écrans plus petits (smartphones) --- */
 @media (max-width: 600px) {
     .container {
-        padding: 20px; /* Réduit le padding du conteneur sur petits écrans */
+        padding: 20px; 
         border-radius: 10px; 
     }
 
     h1 {
-        font-size: 1.4em; /* Réduit la taille du titre */
+        font-size: 1.4em; 
         margin-bottom: 15px;
     }
 
     #company-logo {
-        max-width: 90px; /* Réduit la taille max du logo sur mobile */
+        max-width: 90px; 
         margin-bottom: 10px;
     }
 
@@ -218,6 +228,7 @@ button#submit-low-score:hover {
         letter-spacing: 0px; /* Réduit fortement l'espacement pour forcer une ligne */
         margin-bottom: 20px;
         line-height: 1; /* Assure que la ligne d'étoiles est compacte */
+        text-align: center; /* S'assure que le contenu est centré */
     }
 
     .star {
@@ -225,31 +236,39 @@ button#submit-low-score:hover {
         padding: 0 2px; /* Ajoute un petit padding interne si nécessaire pour l'espace visuel */
     }
 
+    .improvement-options {
+        gap: 8px; /* Réduit l'espacement entre les boutons */
+    }
+
     .option-button {
-        padding: 8px 10px; /* Réduit le padding des boutons d'option */
-        font-size: 0.8em; /* Réduit la taille de police des boutons */
+        padding: 8px 10px; 
+        font-size: 0.8em; 
     }
 
     textarea {
-        width: calc(100% - 30px); /* Ajuste la largeur */
+        width: calc(100% - 30px); 
         padding: 10px;
-        min-height: 70px; /* Ajuste la hauteur du commentaire */
+        min-height: 70px; 
     }
 
     button#submit-low-score,
     .secondary-button {
-        padding: 10px 18px; /* Réduit le padding des boutons principaux */
-        font-size: 0.9em; /* Réduit la taille de police */
+        padding: 10px 18px; 
+        font-size: 0.9em; 
     }
 }
 
 /* --- Ajustements pour les écrans encore plus petits (anciens smartphones ou très petits écrans) --- */
-@media (max-width: 360px) {
+@media (max-width: 400px) {
     .stars {
-        font-size: 2.8em; /* Réduit encore la taille des étoiles si nécessaire */
+        font-size: 2.8em; 
         letter-spacing: -1px; /* Peut rendre l'espacement légèrement négatif si nécessaire */
     }
     h1 {
-        font-size: 1.2em; /* Réduit encore la taille du titre */
+        font-size: 1.2em; 
+    }
+    .option-button {
+        font-size: 0.75em; /* Encore plus petit pour les boutons */
+        padding: 6px 8px;
     }
 }
