@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Fonction pour activer/désactiver les écouteurs de clic et survol sur les étoiles
-    function toggleStarListeners(enable) { 
+    function toggleStarListeners(enable) {
         stars.forEach(star => {
             if (enable) {
                 star.addEventListener('click', handleStarClick);
@@ -125,22 +125,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Gestionnaire de survol d'étoile
-    function handleStarMouseOver() { 
+    // ⭐⭐⭐ CORRECTION DE LA SURBRILLANCE DES ÉTOILES ICI ⭐⭐⭐
+    // Le gestionnaire de survol d'étoile
+    function handleStarMouseOver() {
+        // N'applique l'effet de survol que si aucune note n'est encore sélectionnée
         if (!starRating.classList.contains('rated')) { 
             const hoverValue = parseInt(this.dataset.value);
-            updateStarDisplay(hoverValue);
+            stars.forEach((s, index) => {
+                if (index < hoverValue) {
+                    s.classList.add('selected');
+                } else {
+                    s.classList.remove('selected');
+                }
+            });
         }
     }
 
-    // Gestionnaire de sortie de survol d'étoile
-    function handleStarMouseOut() { 
+    // Le gestionnaire de sortie de survol d'étoile
+    function handleStarMouseOut() {
         if (!starRating.classList.contains('rated')) { 
+            // Réinitialise à 0 (toutes grisées) si aucune note n'est sélectionnée
             updateStarDisplay(0); 
         } else { 
+            // Si une note est sélectionnée, on revient à l'affichage de la note choisie
             updateStarDisplay(selectedRating);
         }
     }
+    // ⭐⭐⭐ FIN DE LA CORRECTION DE LA SURBRILLANCE DES ÉTOILES ⭐⭐⭐
 
     // Gestion des options d'amélioration pour les notes basses (sélection multiple)
     optionButtons.forEach(button => { 
