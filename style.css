@@ -42,57 +42,40 @@ h1 {
     color: #d1d8e0; /* Couleur par défaut des étoiles */
     cursor: pointer;
     margin-bottom: 35px;
-    
-    /* Utilisation de Flexbox pour un alignement robuste */
-    display: flex; 
-    justify-content: center; /* Centre les étoiles horizontalement */
-    align-items: center; /* Centre les étoiles verticalement si elles ont des tailles différentes */
-    gap: 5px; /* Espacement entre les étoiles (remplace letter-spacing pour flex) */
-    
-    white-space: nowrap; /* Empêche les étoiles de passer à la ligne */
-    overflow: hidden; /* Cache le débordement si elles ne tiennent pas */
-    max-width: 100%; /* S'assure que le conteneur ne dépasse pas */
-    padding: 0 5px; /* Petit padding pour éviter que les étoiles ne collent aux bords */
+    letter-spacing: 5px; /* Espacement entre les étoiles */
+    display: inline-block; /* Permet le centrage et la gestion de white-space */
+    white-space: nowrap; /* Empêche les étoiles de passer à la ligne par défaut */
+    overflow: hidden; /* Cache le débordement si les étoiles sont trop grandes avant d'être réduites */
+    max-width: 100%; /* S'assure que le bloc ne dépasse pas le conteneur */
 }
 
 .star {
     transition: color 0.2s ease-in-out, transform 0.1s ease-in-out;
-    display: inline-block; /* Permet les transformations individuelles */
-    flex-shrink: 0; /* Empêche les étoiles de rétrécir si l'espace est limité */
+    display: inline-block; /* Important pour l'espacement et les transitions individuelles */
 }
 
-/* ⭐⭐⭐ CORRECTION MAJEURE POUR LA SURBRILLANCE DES ÉTOILES ⭐⭐⭐ */
-/* Par défaut, toutes les étoiles sont grisées */
-.stars .star {
+.star.selected {
+    color: #f39c12; /* Couleur des étoiles sélectionnées (orange plus vif) */
+}
+
+/* Correction de l'effet de survol des étoiles */
+.stars:not(.rated) .star:hover,
+.stars:not(.rated) .star.hovered { /* Ajout de .hovered pour le JS */
+    color: #f39c12; /* Illumine l'étoile survolée */
+}
+.stars:not(.rated) .star:hover ~ .star,
+.stars:not(.rated) .star.hovered ~ .star {
+    color: #d1d8e0; /* Réinitialise les étoiles à droite de l'étoile survolée */
+}
+.stars:not(.rated) .star.selected ~ .star { /* S'assure que les étoiles non survolées sont grisées si une sélection préalable est annulée par le mouseout */
     color: #d1d8e0;
 }
 
-/* Survol : l'étoile survolée ET toutes les étoiles qui la précèdent deviennent orange */
-.stars:not(.rated) .star:hover,
-.stars:not(.rated) .star:hover ~ .star {
-    color: #f39c12; 
-}
 
-/* Quand une étoile EST sélectionnée (class 'selected'), elle est orange */
-.stars .star.selected {
+/* S'assurer que les étoiles restent sélectionnées après le clic */
+.stars.rated .star.selected {
     color: #f39c12;
 }
-
-/* Quand une étoile EST sélectionnée, toutes les étoiles qui la suivent redeviennent grisées (pour un effet de sélection précis) */
-.stars .star.selected ~ .star {
-    color: #d1d8e0;
-}
-
-/* Quand le conteneur a la classe 'rated' (après un clic), l'effet de survol n'est plus appliqué */
-.stars.rated .star:hover {
-    color: #f39c12; /* L'étoile survolée reste orange si elle est sélectionnée */
-}
-
-.stars.rated .star:not(.selected) {
-    color: #d1d8e0; /* Les étoiles non sélectionnées restent grisées */
-}
-/* ⭐⭐⭐ FIN DE LA CORRECTION MAJEURE POUR LA SURBRILLANCE DES ÉTOILES ⭐⭐⭐ */
-
 
 .hidden {
     display: none;
@@ -216,66 +199,57 @@ button#submit-low-score:hover {
 /* --- Ajustements pour les écrans plus petits (smartphones) --- */
 @media (max-width: 600px) {
     .container {
-        padding: 20px; 
+        padding: 20px; /* Réduit le padding du conteneur sur petits écrans */
         border-radius: 10px; 
     }
 
     h1 {
-        font-size: 1.4em; 
+        font-size: 1.4em; /* Réduit la taille du titre */
         margin-bottom: 15px;
     }
 
     #company-logo {
-        max-width: 80px; 
+        max-width: 90px; /* Réduit la taille max du logo sur mobile */
         margin-bottom: 10px;
     }
 
     .stars {
-        font-size: 3em; 
-        gap: 2px; 
+        font-size: 3.2em; /* Réduit la taille des étoiles pour qu'elles tiennent sur une ligne */
+        letter-spacing: 0px; /* Réduit fortement l'espacement pour forcer une ligne */
         margin-bottom: 20px;
-        line-height: 1; 
-        padding: 0 2px; 
-        /* Pas besoin de text-align: center ici car display: flex + justify-content: center s'en occupe */
+        line-height: 1; /* Assure que la ligne d'étoiles est compacte */
     }
 
     .star {
-        padding: 0; 
-    }
-
-    .improvement-options {
-        gap: 8px; 
+        margin: 0; /* Supprime toute marge externe qui pourrait pousser */
+        padding: 0 2px; /* Ajoute un petit padding interne si nécessaire pour l'espace visuel */
     }
 
     .option-button {
-        padding: 8px 10px; 
-        font-size: 0.8em; 
+        padding: 8px 10px; /* Réduit le padding des boutons d'option */
+        font-size: 0.8em; /* Réduit la taille de police des boutons */
     }
 
     textarea {
-        width: calc(100% - 30px); 
+        width: calc(100% - 30px); /* Ajuste la largeur */
         padding: 10px;
-        min-height: 70px; 
+        min-height: 70px; /* Ajuste la hauteur du commentaire */
     }
 
     button#submit-low-score,
     .secondary-button {
-        padding: 10px 18px; 
-        font-size: 0.9em; 
+        padding: 10px 18px; /* Réduit le padding des boutons principaux */
+        font-size: 0.9em; /* Réduit la taille de police */
     }
 }
 
 /* --- Ajustements pour les écrans encore plus petits (anciens smartphones ou très petits écrans) --- */
-@media (max-width: 400px) {
+@media (max-width: 360px) {
     .stars {
-        font-size: 2.5em; 
-        gap: 1px; 
+        font-size: 2.8em; /* Réduit encore la taille des étoiles si nécessaire */
+        letter-spacing: -1px; /* Peut rendre l'espacement légèrement négatif si nécessaire */
     }
     h1 {
-        font-size: 1.2em; 
-    }
-    .option-button {
-        font-size: 0.7em; 
-        padding: 6px 8px;
+        font-size: 1.2em; /* Réduit encore la taille du titre */
     }
 }
