@@ -183,3 +183,58 @@ button#submit-low-score:hover {
     margin-top: 0;
     margin-bottom: 10px;
 }
+
+/* --- Ajustements pour les écrans plus petits (smartphones) --- */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px; /* Réduit le padding du conteneur sur petits écrans */
+        border-radius: 10px; /* Coins un peu moins arrondis */
+    }
+
+    h1 {
+        font-size: 1.6em; /* Réduit la taille du titre */
+        margin-bottom: 20px;
+    }
+
+    .stars {
+        font-size: 3.5em; /* Réduit la taille des étoiles pour qu'elles tiennent sur une ligne */
+        letter-spacing: 2px; /* Réduit l'espacement entre les étoiles */
+        margin-bottom: 25px;
+    }
+
+    .star {
+        margin: 0 2px; /* Ajuste légèrement la marge des étoiles */
+    }
+
+    #company-logo {
+        max-width: 100px; /* Réduit la taille max du logo sur mobile */
+        margin-bottom: 15px;
+    }
+
+    .option-button {
+        padding: 10px 12px; /* Réduit le padding des boutons d'option */
+        font-size: 0.85em; /* Réduit la taille de police des boutons */
+    }
+
+    textarea {
+        min-height: 80px; /* Ajuste la hauteur du commentaire */
+    }
+
+    button#submit-low-score,
+    .secondary-button {
+        padding: 10px 20px; /* Réduit le padding des boutons principaux */
+        font-size: 1em; /* Réduit la taille de police */
+    }
+}
+
+/* --- Ajustements encore plus petits (anciens smartphones ou très petits écrans) --- */
+@media (max-width: 400px) {
+    .stars {
+        font-size: 3em; /* Réduit encore la taille des étoiles si nécessaire */
+        letter-spacing: 1px;
+    }
+
+    .option-button {
+        font-size: 0.8em;
+    }
+}
