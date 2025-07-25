@@ -18,9 +18,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Récupérer les paramètres de l'URL
     const urlParams = new URLSearchParams(window.location.search);
+
+    // --- CONSOLE.LOGS DE DÉBOGAGE AJOUTÉS ICI ---
+    console.log("URL complète :", window.location.href);
+    console.log("Paramètres bruts de l'URL :", window.location.search);
+    console.log("Objet urlParams :", urlParams.toString());
+    // --- FIN CONSOLE.LOGS DE DÉBOGAGE ---
+
     const company = urlParams.get('nomEntreprise') || 'votre expérience'; 
     const logo = urlParams.get('logoUrl');
     const googleReviewUrlFromParam = urlParams.get('googleUrl') || 'https://www.google.com'; 
+
+    // --- CONSOLE.LOGS DE DÉBOGAGE DES VALEURS PARSÉES ---
+    console.log("Valeur de 'company' :", company);
+    console.log("Valeur de 'logo' :", logo);
+    console.log("Valeur de 'googleReviewUrlFromParam' :", googleReviewUrlFromParam);
+    // --- FIN CONSOLE.LOGS DE DÉBOGAGE DES VALEURS PARSÉES ---
 
     // Mettre à jour le texte du titre
     companyNameSpan.textContent = company;
