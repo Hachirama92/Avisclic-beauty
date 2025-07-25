@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const optionButtons = improvementOptionsContainer.querySelectorAll('.option-button');
     const otherFeedbackTextarea = document.getElementById('other-feedback');
     const submitLowScoreButton = document.getElementById('submit-low-score');
-    const thankYouMessage = document.getElementById('thank-you-message');
+    const thankYouMessage = document.getElementById('thank-ou-message');
     const backToStarsButton = document.getElementById('back-to-stars'); 
     const resetAppButton = document.getElementById('reset-app'); 
 
@@ -60,7 +60,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     // ⭐⭐⭐ FIN DES INFOS SPÉCIFIQUES NAILS BEAUTÉ ⭐⭐⭐
 
+
     // Fonction pour mettre à jour l'affichage des étoiles
+    // Applique la classe 'selected' aux étoiles jusqu'à la valeur donnée
     function updateStarDisplay(ratingValue) { 
         stars.forEach((s, index) => {
             if (index < ratingValue) {
@@ -78,15 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
         otherFeedbackTextarea.value = '';
         optionButtons.forEach(btn => btn.classList.remove('selected')); 
 
-        updateStarDisplay(0); 
-        starRating.classList.remove('rated'); 
+        updateStarDisplay(0); // Toutes les étoiles grisées
+        starRating.classList.remove('rated'); // Permet de nouveau l'effet de survol et le clic
 
         initialFeedbackSection.classList.remove('hidden'); 
         feedbackLowScore.classList.add('hidden');
         thankYouMessage.classList.add('hidden');
         submitLowScoreButton.classList.remove('hidden'); 
         
-        toggleStarListeners(true); 
+        toggleStarListeners(true); // Active les écouteurs pour une nouvelle sélection
     }
 
     // Fonction pour activer/désactiver les écouteurs de clic et survol sur les étoiles
@@ -96,12 +98,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 star.addEventListener('click', handleStarClick);
                 star.addEventListener('mouseover', handleStarMouseOver);
                 star.addEventListener('mouseout', handleStarMouseOut);
-                star.style.cursor = 'pointer'; 
+                star.style.cursor = 'pointer'; // Indique que c'est cliquable
             } else {
                 star.removeEventListener('click', handleStarClick);
                 star.removeEventListener('mouseover', handleStarMouseOver);
                 star.removeEventListener('mouseout', handleStarMouseOut);
-                star.style.cursor = 'default'; 
+                star.style.cursor = 'default'; // Indique que ce n'est plus cliquable
             }
         });
     }
@@ -110,48 +112,46 @@ document.addEventListener('DOMContentLoaded', () => {
     function handleStarClick() { 
         selectedRating = parseInt(this.dataset.value); 
         
-        updateStarDisplay(selectedRating); 
-        starRating.classList.add('rated'); 
+        updateStarDisplay(selectedRating); // Applique la sélection visuelle
+        starRating.classList.add('rated'); // Marque comme "noté" pour figer l'affichage
 
-        toggleStarListeners(false); 
+        toggleStarListeners(false); // Désactive les interactions pour éviter de changer la note en cours de formulaire
 
-        initialFeedbackSection.classList.add('hidden');
+        initialFeedbackSection.classList.add('hidden'); // Cache la section initiale
 
         if (selectedRating <= 3) {
             feedbackLowScore.classList.remove('hidden');
             thankYouMessage.classList.add('hidden'); 
         } else {
-            window.location.href = googleReviewUrlFromParam;
+            window.location.href = googleReviewUrlFromParam; // Redirige vers Google
         }
     }
 
-    // ⭐⭐⭐ CORRECTION DE LA SURBRILLANCE DES ÉTOILES ICI ⭐⭐⭐
-    // Le gestionnaire de survol d'étoile
-    function handleStarMouseOver() {
+    // Gestionnaire de survol d'étoile (pour éclairer les étoiles avant le clic)
+    function handleStarMouseOver() { 
         // N'applique l'effet de survol que si aucune note n'est encore sélectionnée
         if (!starRating.classList.contains('rated')) { 
             const hoverValue = parseInt(this.dataset.value);
             stars.forEach((s, index) => {
                 if (index < hoverValue) {
-                    s.classList.add('selected');
+                    s.classList.add('selected'); // Éclaire l'étoile survolée et les précédentes
                 } else {
-                    s.classList.remove('selected');
+                    s.classList.remove('selected'); // Les suivantes sont grisées
                 }
             });
         }
     }
 
-    // Le gestionnaire de sortie de survol d'étoile
-    function handleStarMouseOut() {
+    // Gestionnaire de sortie de survol d'étoile (pour réinitialiser l'affichage si pas de clic)
+    function handleStarMouseOut() { 
         if (!starRating.classList.contains('rated')) { 
-            // Réinitialise à 0 (toutes grisées) si aucune note n'est sélectionnée
+            // Si aucune note n'est sélectionnée, toutes les étoiles redeviennent grisées
             updateStarDisplay(0); 
         } else { 
             // Si une note est sélectionnée, on revient à l'affichage de la note choisie
             updateStarDisplay(selectedRating);
         }
     }
-    // ⭐⭐⭐ FIN DE LA CORRECTION DE LA SURBRILLANCE DES ÉTOILES ⭐⭐⭐
 
     // Gestion des options d'amélioration pour les notes basses (sélection multiple)
     optionButtons.forEach(button => { 
@@ -214,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         feedbackLowScore.classList.add('hidden');
         initialFeedbackSection.classList.remove('hidden'); 
         starRating.classList.remove('rated'); 
-        toggleStarListeners(true); 
+        toggleStarListeners(true); // Réactive les interactions après le retour
     });
 
     // Gestion du bouton "Fermer"
